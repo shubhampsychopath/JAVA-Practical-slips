@@ -1,0 +1,165 @@
+import java.util.Scanner;
+
+public class MenuDrivenProgram {
+
+    // Method to calculate volume of cylinder
+    public static void calculateCylinderVolume() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the radius of the cylinder: ");
+        double radius = scanner.nextDouble();
+
+        System.out.print("Enter the height of the cylinder: ");
+        double height = scanner.nextDouble();
+
+        // Volume of a cylinder = π * radius^2 * height
+        double volume = Math.PI * Math.pow(radius, 2) * height;
+        System.out.println("Volume of the cylinder: " + volume);
+    }
+
+    // Method to calculate factorial
+    public static void findFactorial() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a number to find its factorial: ");
+        int num = scanner.nextInt();
+
+        long factorial = 1;
+
+        for (int i = 1; i <= num; i++) {
+            factorial *= i;
+        }
+
+        System.out.println("Factorial of " + num + " is: " + factorial);
+    }
+
+    // Method to check if a number is Armstrong number
+    public static void checkArmstrong() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a number to check if it's Armstrong: ");
+        int number = scanner.nextInt();
+
+        int originalNumber, remainder, result = 0, n = 0;
+        originalNumber = number;
+
+        // Find the number of digits
+        for (;originalNumber != 0; originalNumber /= 10, ++n);
+
+        originalNumber = number;
+
+        // Compute the sum of nth powers of its digits
+        for (;originalNumber != 0; originalNumber /= 10) {
+            remainder = originalNumber % 10;
+            result += Math.pow(remainder, n);
+        }
+
+        // Check if the result is equal to the original number
+        if(result == number) {
+            System.out.println(number + " is an Armstrong number.");
+        } else {
+            System.out.println(number + " is not an Armstrong number.");
+        }
+    }
+
+    // Main method to drive the menu
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            // Display the menu
+            System.out.println("\nMenu:");
+            System.out.println("1. Calculate the volume of a cylinder");
+            System.out.println("2. Find the factorial of a given number");
+            System.out.println("3. Check if a number is Armstrong or not");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            // Perform operations based on user choice
+            switch (choice) {
+                case 1:
+                    calculateCylinderVolume();
+                    break;
+                case 2:
+                    findFactorial();
+                    break;
+                case 3:
+                    checkArmstrong();
+                    break;
+                case 4:
+                    System.out.println("Exiting the program.");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        } while (choice != 4);
+
+        scanner.close();
+    }
+}
+
+Q.2.//
+// Marker interface
+interface Marker {
+    // No methods - acts as a marker
+}
+
+// Product class implementing Marker interface
+class Product implements Marker {
+    private static int objectCount = 0;  // Static variable to keep track of the number of objects
+    private int productId;
+    private String productName;
+    private int productQuantity;
+
+    // Default constructor
+    public Product() {
+        this.productId = 0;
+        this.productName = "Unknown";
+        this.productQuantity = 0;
+        objectCount++;  // Increment object count
+    }
+
+    // Parameterized constructor
+    public Product(int productId, String productName, int productQuantity) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productQuantity = productQuantity;
+        objectCount++;  // Increment object count
+    }
+
+    // Method to display the product details
+    public void display() {
+        System.out.println("Product ID: " + productId);
+        System.out.println("Product Name: " + productName);
+        System.out.println("Product Quantity: " + productQuantity);
+    }
+
+    // Static method to get the object count
+    public static int getObjectCount() {
+        return objectCount;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create objects of Product class using parameterized constructor
+        Product product1 = new Product(101, "Laptop", 10);
+        Product product2 = new Product(102, "Mobile", 20);
+        Product product3 = new Product(103, "Tablet", 15);
+
+        // Display the contents of each product object
+        System.out.println("Details of Product 1:");
+        product1.display();
+        
+        System.out.println("\nDetails of Product 2:");
+        product2.display();
+
+        System.out.println("\nDetails of Product 3:");
+        product3.display();
+
+        // Display the total number of objects created
+        System.out.println("\nTotal number of Product objects created: " + Product.getObjectCount());
+    }
+}
