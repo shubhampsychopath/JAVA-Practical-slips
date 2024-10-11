@@ -1,0 +1,105 @@
+Q1.//
+class Employee {
+    private int id;
+    private String name;
+    private String deptName;
+    private double salary;
+    private static int objectCount = 0;  // Static variable to keep track of object count
+
+    // Default constructor
+    public Employee() {
+        this.id = 0;
+        this.name = "Unknown";
+        this.deptName = "None";
+        this.salary = 0.0;
+        objectCount++;  // Increment object count when object is created
+    }
+
+    // Parameterized constructor
+    public Employee(int id, String name, String deptName, double salary) {
+        this.id = id;  // Use 'this' to refer to the current object's instance variables
+        this.name = name;
+        this.deptName = deptName;
+        this.salary = salary;
+        objectCount++;  // Increment object count
+    }
+
+    // Static method to get the current object count
+    public static int getObjectCount() {
+        return objectCount;
+    }
+
+    // Method to display employee details
+    public void display() {
+        System.out.println("\nEmployee Details:");
+        System.out.println("ID: " + this.id);
+        System.out.println("Name: " + this.name);
+        System.out.println("Department: " + this.deptName);
+        System.out.println("Salary: " + this.salary);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create first employee object using parameterized constructor
+        Employee emp1 = new Employee(101, "Alice", "IT", 55000.0);
+        emp1.display();
+        System.out.println("Current Object Count: " + Employee.getObjectCount());
+
+        // Create second employee object
+        Employee emp2 = new Employee(102, "Bob", "HR", 45000.0);
+        emp2.display();
+        System.out.println("Current Object Count: " + Employee.getObjectCount());
+
+        // Create third employee object
+        Employee emp3 = new Employee(103, "Charlie", "Finance", 60000.0);
+        emp3.display();
+        System.out.println("Current Object Count: " + Employee.getObjectCount());
+    }
+}
+
+Q2.//
+import java.io.*;
+import java.util.Scanner;
+
+class Book implements Serializable {
+    private int bookId;
+    private String bookName;
+    private double bookPrice;
+    private int bookQty;
+
+    // Parameterized constructor
+    public Book(int bookId, String bookName, double bookPrice, int bookQty) {
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.bookPrice = bookPrice;
+        this.bookQty = bookQty;
+    }
+
+    // Getters
+    public String getBookName() {
+        return bookName;
+    }
+
+    public double getTotalPrice() {
+        return bookPrice * bookQty;
+    }
+
+    // Method to display book details
+    public void display() {
+        System.out.println("Book ID: " + bookId);
+        System.out.println("Book Name: " + bookName);
+        System.out.println("Book Price: " + bookPrice);
+        System.out.println("Book Quantity: " + bookQty);
+        System.out.println("Total Cost: " + getTotalPrice());
+    }
+}
+
+public class BookStore {
+
+    // Method to write book information to file
+    public static void writeBookToFile(Book book, RandomAccessFile file) throws IOException {
+        file.writeInt(book.bookId); // Writing integer book ID
+        file.writeUTF(book.bookName); // Writing book name
+        file.writeDouble(book.bookPrice); // Writing book price
+        file.writingbookgetbook
