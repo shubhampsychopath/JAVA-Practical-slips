@@ -1,0 +1,137 @@
+Q1. write a java progran that take input as a person in the format of first, middle and last name an then print it in the form last, first and middle name, where in the middle name first character is capital letter.import java.util.Scanner;
+
+public class NameFormatter {
+    public static void main(String[] args) {
+        // Create a Scanner object to take input
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt the user to enter the full name (First Middle Last)
+        System.out.print("Enter the full name (First Middle Last): ");
+        String fullName = scanner.nextLine().trim();
+
+        // Split the input into parts (first, middle, and last names)
+        String[] nameParts = fullName.split("\\s+");
+
+        String firstName = "";
+        String middleName = "";
+        String lastName = "";
+
+        // Handle different cases based on the number of parts in the name
+        if (nameParts.length == 3) {
+            firstName = nameParts[0];
+            middleName = nameParts[1];
+            lastName = nameParts[2];
+        } else if (nameParts.length == 2) {
+            firstName = nameParts[0];
+            lastName = nameParts[1];
+        } else if (nameParts.length == 1) {
+            firstName = nameParts[0];
+        } else {
+            System.out.println("Invalid input! Please enter a name in the format: First Middle Last");
+            return;
+        }
+
+        // Capitalize the first letter of the middle name if it exists
+        if (!middleName.isEmpty()) {
+            middleName = middleName.substring(0, 1).toUpperCase() + middleName.substring(1).toLowerCase();
+        }
+
+        // Display the name in the format: Last, First Middle
+        System.out.println("Formatted Name: " + lastName + ", " + firstName + " " + middleName);
+
+        // Close the scanner
+        scanner.close();
+    }
+}
+
+Q2. define a class Mydate(day, month, year) with methods to accept and displays a Mydate object. Accept  Date as dd,mm,yyyy. Throw user defined exception "InvalidDateException" if the date is invalid. Examples of invalid dates : 03 15 2019, 31 6 2000, 29 2 2021
+import java.util.Scanner;
+
+// Custom exception for invalid dates
+class InvalidDateException extends Exception {
+    public InvalidDateException(String message) {
+        super(message);
+    }
+}
+
+// MyDate class definition
+class MyDate {
+    private int day;
+    private int month;
+    private int year;
+
+    // Method to accept date
+    public void acceptDate() throws InvalidDateException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter date (dd mm yyyy): ");
+        String[] dateParts = scanner.nextLine().split(" ");
+        
+        // Parse the day, month, and year
+        if (dateParts.length != 3) {
+            throw new InvalidDateException("Invalid input! Please enter the date in the format: dd mm yyyy.");
+        }
+        
+        day = Integer.parseInt(dateParts[0]);
+        month = Integer.parseInt(dateParts[1]);
+        year = Integer.parseInt(dateParts[2]);
+
+        // Validate the date
+        if (!isValidDate(day, month, year)) {
+            throw new InvalidDateException("Invalid Date: " + day + "/" + month + "/" + year);
+        }
+    }
+
+    // Method to validate the date
+    private boolean isValidDate(int day, int month, int year) {
+        // Check if month is valid
+        if (month < 1 || month > 12) {
+            return false;
+        }
+
+        // Check if day is valid based on the month
+        int maxDays = getMaxDaysInMonth(month, year);
+        return day >= 1 && day <= maxDays;
+    }
+
+    // Method to get the maximum number of days in a month
+    private int getMaxDaysInMonth(int month, int year) {
+        switch (month) {
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                return 31; // Months with 31 days
+            case 4: case 6: case 9: case 11:
+                return 30; // Months with 30 days
+            case 2:
+                // Check for leap year
+                return (isLeapYear(year)) ? 29 : 28; // February
+            default:
+                return 0; // Invalid month
+        }
+    }
+
+    // Method to check if a year is a leap year
+    private boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    // Method to display the date
+    public void displayDate() {
+        System.out.println("Date: " + day + "/" + month + "/" + year);
+    }
+}
+
+// Main class to test the program
+public class DateTest {
+    public static void main(String[] args) {
+        MyDate myDate = new MyDate();
+        
+        try {
+            // Accept the date
+            myDate.acceptDate();
+            // Display the date
+            myDate.displayDate();
+        } catch (InvalidDateException e) {
+            // Handle the exception
+            System.out.println(e.getMessage());
+        }
+    }
+}
