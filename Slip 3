@@ -1,0 +1,192 @@
+import java.util.Scanner;
+
+public class ReverseArray {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Accept the size of the array
+        System.out.print("Enter the number of elements in the array: ");
+        int n = scanner.nextInt();
+
+        // Create an array of the given size
+        int[] arr = new int[n];
+
+        // Accept the elements of the array
+        System.out.println("Enter " + n + " elements:");
+        for (int i = 0; i < n; i++) {
+            System.out.print("Element " + (i + 1) + ": ");
+            arr[i] = scanner.nextInt();
+        }
+
+        // Display the array in reverse order
+        System.out.println("\nArray elements in reverse order:");
+        for (int i = n - 1; i >= 0; i--) {
+            System.out.print(arr[i] + " ");
+        }
+
+        scanner.close(); // Close the scanner
+    }
+}
+
+Q2.//
+To achieve this, we’ll follow the steps:
+
+Create a package sy with the class SYMarks.
+Create another package ty with the class TYMarks.
+Create a Student class which has members for rollNumber, name, SYMarks, and TYMarks.
+Implement the logic to calculate the total marks, determine the grade, and display the results.
+Step 1: Create Package sy with Class SYMarks
+java
+Copy code
+// File: sy/SYMarks.java
+package sy;
+
+public class SYMarks {
+    public int computerTotal;
+    public int mathsTotal;
+    public int electronicsTotal;
+
+    // Parameterized constructor
+    public SYMarks(int computerTotal, int mathsTotal, int electronicsTotal) {
+        this.computerTotal = computerTotal;
+        this.mathsTotal = mathsTotal;
+        this.electronicsTotal = electronicsTotal;
+    }
+
+    // Default constructor
+    public SYMarks() {
+        this(0, 0, 0);
+    }
+
+    // Method to display SY marks
+    public void displaySYMarks() {
+        System.out.println("SY Marks - Computer: " + computerTotal + ", Maths: " + mathsTotal + ", Electronics: " + electronicsTotal);
+    }
+}
+Step 2: Create Package ty with Class TYMarks
+java
+Copy code
+// File: ty/TYMarks.java
+package ty;
+
+public class TYMarks {
+    public int theory;
+    public int practicals;
+
+    // Parameterized constructor
+    public TYMarks(int theory, int practicals) {
+        this.theory = theory;
+        this.practicals = practicals;
+    }
+
+    // Default constructor
+    public TYMarks() {
+        this(0, 0);
+    }
+
+    // Method to display TY marks
+    public void displayTYMarks() {
+        System.out.println("TY Marks - Theory: " + theory + ", Practicals: " + practicals);
+    }
+}
+Step 3: Create Student Class and Main Program
+java
+Copy code
+// File: Main.java
+import sy.SYMarks;
+import ty.TYMarks;
+
+import java.util.Scanner;
+
+class Student {
+    private int rollNumber;
+    private String name;
+    private SYMarks syMarks;
+    private TYMarks tyMarks;
+
+    // Constructor
+    public Student(int rollNumber, String name, SYMarks syMarks, TYMarks tyMarks) {
+        this.rollNumber = rollNumber;
+        this.name = name;
+        this.syMarks = syMarks;
+        this.tyMarks = tyMarks;
+    }
+
+    // Method to calculate and display the result
+    public void calculateAndDisplayResult() {
+        // Calculate total computer marks from SY and TY
+        int totalComputerMarks = syMarks.computerTotal + tyMarks.theory + tyMarks.practicals;
+
+        // Determine grade
+        String grade;
+        if (totalComputerMarks >= 70) {
+            grade = "A";
+        } else if (totalComputerMarks >= 60) {
+            grade = "B";
+        } else if (totalComputerMarks >= 50) {
+            grade = "C";
+        } else if (totalComputerMarks >= 40) {
+            grade = "Pass Class";
+        } else {
+            grade = "Fail";
+        }
+
+        // Display student details and result
+        System.out.println("\nStudent Roll Number: " + rollNumber);
+        System.out.println("Student Name: " + name);
+        syMarks.displaySYMarks();
+        tyMarks.displayTYMarks();
+        System.out.println("Total Computer Marks (SY + TY): " + totalComputerMarks);
+        System.out.println("Grade: " + grade);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Accept number of students
+        System.out.print("Enter the number of students: ");
+        int n = scanner.nextInt();
+
+        // Create an array of Student objects
+        Student[] students = new Student[n];
+
+        // Loop to accept student details
+        for (int i = 0; i < n; i++) {
+            System.out.println("\nEnter details for Student " + (i + 1) + ":");
+
+            System.out.print("Enter Roll Number: ");
+            int rollNumber = scanner.nextInt();
+
+            scanner.nextLine(); // Consume newline
+
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+
+            // Accept SY Marks
+            System.out.println("Enter SY Marks (Computer, Maths, Electronics):");
+            int syComputer = scanner.nextInt();
+            int syMaths = scanner.nextInt();
+            int syElectronics = scanner.nextInt();
+            SYMarks syMarks = new SYMarks(syComputer, syMaths, syElectronics);
+
+            // Accept TY Marks
+            System.out.println("Enter TY Marks (Theory, Practicals):");
+            int tyTheory = scanner.nextInt();
+            int tyPracticals = scanner.nextInt();
+            TYMarks tyMarks = new TYMarks(tyTheory, tyPracticals);
+
+            // Create Student object and store in the array
+            students[i] = new Student(rollNumber, name, syMarks, tyMarks);
+        }
+
+        // Display result for all students
+        System.out.println("\nStudent Results:");
+        for (Student student : students) {
+            student.calculateAndDisplayResult();
+        }
+
+        scanner.close(); // Close the scanner
+    }
+}
