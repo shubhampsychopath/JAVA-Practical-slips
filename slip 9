@@ -1,0 +1,186 @@
+Q1.define a class CricketPlayer(name, no_of_innings, no_of_times_notout, totalruns, bat_avg). create an array of n player objects. Calculate the batting average for each player using static method avg(). Define a static sort method which sorts the array on the basis of average. Display the player details in sorted order.
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
+
+// CricketPlayer class definition
+class CricketPlayer {
+    private String name;
+    private int no_of_innings;
+    private int no_of_times_notout;
+    private int totalRuns;
+    private double batAvg;
+
+    // Constructor
+    public CricketPlayer(String name, int no_of_innings, int no_of_times_notout, int totalRuns) {
+        this.name = name;
+        this.no_of_innings = no_of_innings;
+        this.no_of_times_notout = no_of_times_notout;
+        this.totalRuns = totalRuns;
+        this.batAvg = calculateBattingAverage(); // Calculate batting average
+    }
+
+    // Method to calculate batting average
+    private double calculateBattingAverage() {
+        // Batting average formula
+        return (no_of_innings - no_of_times_notout) > 0 ? (double) totalRuns / (no_of_innings - no_of_times_notout) : 0.0;
+    }
+
+    // Static method to sort players by batting average
+    public static void sortPlayersByAvg(CricketPlayer[] players) {
+        Arrays.sort(players, Comparator.comparingDouble(CricketPlayer::getBattingAverage).reversed());
+    }
+
+    // Getter for batting average
+    public double getBattingAverage() {
+        return batAvg;
+    }
+
+    // Method to display player details
+    public void displayDetails() {
+        System.out.printf("Name: %s, Innings: %d, Not Out: %d, Total Runs: %d, Batting Average: %.2f%n",
+                name, no_of_innings, no_of_times_notout, totalRuns, batAvg);
+    }
+}
+
+// Main class to test the program
+public class CricketPlayerTest {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of players: ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        CricketPlayer[] players = new CricketPlayer[n];
+
+        // Accept player details
+        for (int i = 0; i < n; i++) {
+            System.out.printf("Enter details for player %d:\n", i + 1);
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Number of Innings: ");
+            int innings = scanner.nextInt();
+            System.out.print("Number of Times Not Out: ");
+            int notOut = scanner.nextInt();
+            System.out.print("Total Runs: ");
+            int runs = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            // Create a new CricketPlayer object
+            players[i] = new CricketPlayer(name, innings, notOut, runs);
+        }
+
+        // Sort players by batting average
+        CricketPlayer.sortPlayersByAvg(players);
+
+        // Display sorted player details
+        System.out.println("\nPlayer details sorted by batting average:");
+        for (CricketPlayer player : players) {
+            player.displayDetails();
+        }
+
+        // Close the scanner
+        scanner.close();
+    }
+}
+
+Q2.create the following GUI screen using appropriate layout managers. Accept the name, class, hobbies of the user and apply the changes and display the selected options in a text box.
+ import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UserInfoForm extends JFrame {
+    private JTextField nameField;
+    private JTextField classField;
+    private JCheckBox hobby1;
+    private JCheckBox hobby2;
+    private JCheckBox hobby3;
+    private JTextArea displayArea;
+
+    public UserInfoForm() {
+        // Set up the frame
+        setTitle("User Info Form");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Create the panel for input fields
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(5, 2));
+
+        // Name field
+        inputPanel.add(new JLabel("Name:"));
+        nameField = new JTextField();
+        inputPanel.add(nameField);
+
+        // Class field
+        inputPanel.add(new JLabel("Class:"));
+        classField = new JTextField();
+        inputPanel.add(classField);
+
+        // Hobbies checkboxes
+        inputPanel.add(new JLabel("Hobbies:"));
+        hobby1 = new JCheckBox("Reading");
+        hobby2 = new JCheckBox("Traveling");
+        hobby3 = new JCheckBox("Gaming");
+        JPanel hobbyPanel = new JPanel();
+        hobbyPanel.add(hobby1);
+        hobbyPanel.add(hobby2);
+        hobbyPanel.add(hobby3);
+        inputPanel.add(hobbyPanel);
+
+        // Apply button
+        JButton applyButton = new JButton("Apply");
+        applyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                displaySelectedOptions();
+            }
+        });
+
+        // Add components to the input panel
+        inputPanel.add(applyButton);
+        add(inputPanel, BorderLayout.NORTH);
+
+        // Text area to display the output
+        displayArea = new JTextArea();
+        displayArea.setEditable(false);
+        add(new JScrollPane(displayArea), BorderLayout.CENTER);
+    }
+
+    // Method to display selected options
+    private void displaySelectedOptions() {
+        String name = nameField.getText();
+        String className = classField.getText();
+        StringBuilder hobbies = new StringBuilder("Hobbies: ");
+
+        if (hobby1.isSelected()) {
+            hobbies.append(hobby1.getText()).append(", ");
+        }
+        if (hobby2.isSelected()) {
+            hobbies.append(hobby2.getText()).append(", ");
+        }
+        if (hobby3.isSelected()) {
+            hobbies.append(hobby3.getText()).append(", ");
+        }
+
+        // Remove the last comma and space
+        if (hobbies.length() > 8) {
+            hobbies.setLength(hobbies.length() - 2);
+        } else {
+            hobbies.append("None");
+        }
+
+        // Display the selected options in the text area
+        displayArea.setText("Name: " + name + "\nClass: " + className + "\n" + hobbies.toString());
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            UserInfoForm userInfoForm = new UserInfoForm();
+            userInfoForm.setVisible(true);
+        });
+    }
+}
