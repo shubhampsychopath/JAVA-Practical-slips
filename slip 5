@@ -1,0 +1,175 @@
+Q1.define student class(roll_no, name, percentage) to create n objects of the class. Accept details from the user for each object. define a static method "sortStudent" which sorts the array on the basis of percentage.
+import java.util.Arrays;
+import java.util.Scanner;
+
+class Student {
+    private int roll_no;
+    private String name;
+    private double percentage;
+
+    // Constructor to initialize student details
+    public Student(int roll_no, String name, double percentage) {
+        this.roll_no = roll_no;
+        this.name = name;
+        this.percentage = percentage;
+    }
+
+    // Getter for percentage
+    public double getPercentage() {
+        return percentage;
+    }
+
+    // Method to display student details
+    public void display() {
+        System.out.println("Roll No: " + roll_no + ", Name: " + name + ", Percentage: " + percentage);
+    }
+
+    // Static method to sort students based on percentage
+    public static void sortStudent(Student[] students) {
+        Arrays.sort(students, (s1, s2) -> Double.compare(s2.getPercentage(), s1.getPercentage()));
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Accept the number of students
+        System.out.print("Enter the number of students: ");
+        int n = scanner.nextInt();
+
+        // Create an array of Student objects
+        Student[] students = new Student[n];
+
+        // Accept details for each student
+        for (int i = 0; i < n; i++) {
+            System.out.println("\nEnter details for Student " + (i + 1) + ":");
+            System.out.print("Enter Roll No: ");
+            int roll_no = scanner.nextInt();
+            scanner.nextLine();  // Consume the newline
+
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Enter Percentage: ");
+            double percentage = scanner.nextDouble();
+
+            // Create a new student object and store it in the array
+            students[i] = new Student(roll_no, name, percentage);
+        }
+
+        // Sort the students by percentage
+        Student.sortStudent(students);
+
+        // Display sorted student details
+        System.out.println("\nSorted Student List by Percentage (Descending):");
+        for (Student student : students) {
+            student.display();
+        }
+
+        scanner.close(); // Close the scanner
+    }
+}
+
+Q2.define a class MyNumber having one private int data member. Write a default constructor to initialize it to 0 and another constructor to initialize it to a value(Use this). Write methods isNegative, isPositive, isZero, isOdd, isEven. Create an object in main. use coommand line argumnets to pass a value to the object(hint: covert string argument to integer) and perform the above tests. Provide javadoc comments for all constructors and methods and generate the html help file.
+/**
+ * The MyNumber class represents an integer and provides methods
+ * to test its properties such as whether it is negative, positive, zero,
+ * odd, or even.
+ */
+class MyNumber {
+    private int number;
+
+    /**
+     * Default constructor that initializes the number to 0.
+     */
+    public MyNumber() {
+        this.number = 0;
+    }
+
+    /**
+     * Parameterized constructor that initializes the number to the given value.
+     * @param number the integer value to initialize the number with.
+     */
+    public MyNumber(int number) {
+        this.number = number;
+    }
+
+    /**
+     * Checks if the number is negative.
+     * @return true if the number is negative, false otherwise.
+     */
+    public boolean isNegative() {
+        return number < 0;
+    }
+
+    /**
+     * Checks if the number is positive.
+     * @return true if the number is positive, false otherwise.
+     */
+    public boolean isPositive() {
+        return number > 0;
+    }
+
+    /**
+     * Checks if the number is zero.
+     * @return true if the number is zero, false otherwise.
+     */
+    public boolean isZero() {
+        return number == 0;
+    }
+
+    /**
+     * Checks if the number is odd.
+     * @return true if the number is odd, false otherwise.
+     */
+    public boolean isOdd() {
+        return number % 2 != 0;
+    }
+
+    /**
+     * Checks if the number is even.
+     * @return true if the number is even, false otherwise.
+     */
+    public boolean isEven() {
+        return number % 2 == 0;
+    }
+
+    /**
+     * Displays the properties of the number.
+     */
+    public void displayProperties() {
+        System.out.println("Number: " + number);
+        System.out.println("Is Negative: " + isNegative());
+        System.out.println("Is Positive: " + isPositive());
+        System.out.println("Is Zero: " + isZero());
+        System.out.println("Is Odd: " + isOdd());
+        System.out.println("Is Even: " + isEven());
+    }
+}
+
+/**
+ * The main class that uses the MyNumber class.
+ */
+public class Main {
+    public static void main(String[] args) {
+        // Check if a number was passed via command-line arguments
+        if (args.length > 0) {
+            try {
+                // Convert the first command-line argument from String to integer
+                int number = Integer.parseInt(args[0]);
+
+                // Create an object of MyNumber using the parameterized constructor
+                MyNumber myNumber = new MyNumber(number);
+
+                // Display the properties of the number
+                myNumber.displayProperties();
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid integer.");
+            }
+        } else {
+            System.out.println("Please pass a number as a command-line argument.");
+        }
+    }
+}
