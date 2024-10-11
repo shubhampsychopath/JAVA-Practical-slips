@@ -1,0 +1,157 @@
+Q1.write a program for multilevel inheritance such that country is inherited from continent. State is inherited from country. Display the place, state, country, and continent.
+// Base class representing a continent
+class Continent {
+    private String continentName;
+
+    // Constructor
+    public Continent(String continentName) {
+        this.continentName = continentName;
+    }
+
+    // Getter for continent name
+    public String getContinentName() {
+        return continentName;
+    }
+}
+
+// Class representing a country that inherits from Continent
+class Country extends Continent {
+    private String countryName;
+
+    // Constructor
+    public Country(String continentName, String countryName) {
+        super(continentName); // Call the constructor of Continent
+        this.countryName = countryName;
+    }
+
+    // Getter for country name
+    public String getCountryName() {
+        return countryName;
+    }
+}
+
+// Class representing a state that inherits from Country
+class State extends Country {
+    private String stateName;
+
+    // Constructor
+    public State(String continentName, String countryName, String stateName) {
+        super(continentName, countryName); // Call the constructor of Country
+        this.stateName = stateName;
+    }
+
+    // Getter for state name
+    public String getStateName() {
+        return stateName;
+    }
+
+    // Method to display place information
+    public void displayInfo(String placeName) {
+        System.out.println("Place: " + placeName);
+        System.out.println("State: " + getStateName());
+        System.out.println("Country: " + getCountryName());
+        System.out.println("Continent: " + getContinentName());
+    }
+}
+
+// Main class to test the program
+public class MultilevelInheritanceTest {
+    public static void main(String[] args) {
+        // Create a State object
+        State state = new State("North America", "United States", "California");
+
+        // Display place, state, country, and continent
+        state.displayInfo("Los Angeles");
+    }
+}
+
+Q2.write a java program to design a screen using Awt that will take a user name and password. The user name and password are not same, raise an exception with appropriate message. User can have 3 login chances only. Use clear button to clear the TextFields.
+import java.awt.*;
+import java.awt.event.*;
+
+public class LoginScreen extends Frame implements ActionListener {
+    private TextField usernameField;
+    private TextField passwordField;
+    private Label messageLabel;
+    private int loginAttempts = 3; // Number of allowed login attempts
+
+    public LoginScreen() {
+        // Frame setup
+        setTitle("Login Screen");
+        setSize(300, 200);
+        setLayout(new GridLayout(4, 2));
+
+        // Create UI components
+        Label usernameLabel = new Label("Username:");
+        usernameField = new TextField();
+        Label passwordLabel = new Label("Password:");
+        passwordField = new TextField();
+        passwordField.setEchoChar('*'); // Mask the password input
+
+        Button loginButton = new Button("Login");
+        Button clearButton = new Button("Clear");
+
+        messageLabel = new Label();
+        messageLabel.setForeground(Color.RED); // Set message label color to red
+
+        // Add action listeners
+        loginButton.addActionListener(this);
+        clearButton.addActionListener(e -> clearFields());
+
+        // Add components to the frame
+        add(usernameLabel);
+        add(usernameField);
+        add(passwordLabel);
+        add(passwordField);
+        add(loginButton);
+        add(clearButton);
+        add(messageLabel);
+
+        // Frame settings
+        setVisible(true);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                dispose(); // Close the window
+            }
+        });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        try {
+            // Check if username and password are the same
+            if (username.equals(password)) {
+                throw new Exception("Username and password cannot be the same.");
+            }
+            // If both are entered correctly
+            messageLabel.setText("Login successful!");
+        } catch (Exception ex) {
+            loginAttempts--; // Decrement login attempts
+            if (loginAttempts > 0) {
+                messageLabel.setText(ex.getMessage() + " You have " + loginAttempts + " attempts left.");
+            } else {
+                messageLabel.setText("Login attempts exceeded. Please try again later.");
+                // Disable login button after 3 failed attempts
+                usernameField.setEnabled(false);
+                passwordField.setEnabled(false);
+            }
+        }
+    }
+
+    // Method to clear input fields
+    private void clearFields() {
+        usernameField.setText("");
+        passwordField.setText("");
+        messageLabel.setText("");
+        loginAttempts = 3; // Reset login attempts
+        usernameField.setEnabled(true);
+        passwordField.setEnabled(true);
+    }
+
+    public static void main(String[] args) {
+        new LoginScreen();
+    }
+}
