@@ -1,0 +1,77 @@
+Q1.define an abstract class staff with protected members id and name. Define a parameterized constructor . Define one subclass OfficeStaff with member department. Create n objects of OfficeStaff and display all details.
+import java.util.Scanner;
+
+// Abstract class Staff with protected members
+abstract class Staff {
+    protected int id;
+    protected String name;
+
+    // Parameterized constructor to initialize id and name
+    public Staff(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Abstract method to display staff details (to be implemented by subclasses)
+    public abstract void display();
+}
+
+// Subclass OfficeStaff inheriting from Staff
+class OfficeStaff extends Staff {
+    private String department;
+
+    // Constructor to initialize all members including department
+    public OfficeStaff(int id, String name, String department) {
+        super(id, name); // Call to superclass constructor
+        this.department = department;
+    }
+
+    // Override display method to print details
+    @Override
+    public void display() {
+        System.out.println("ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Department: " + department);
+        System.out.println("-----------------------");
+    }
+}
+
+// Main class to test the implementation
+public class OfficeStaffTest {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of OfficeStaff members: ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character
+
+        // Create an array of OfficeStaff objects
+        OfficeStaff[] staffArray = new OfficeStaff[n];
+
+        // Accept details for each OfficeStaff member
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter details for OfficeStaff " + (i + 1) + ":");
+
+            System.out.print("ID: ");
+            int id = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Department: ");
+            String department = scanner.nextLine();
+
+            // Create and store the OfficeStaff object
+            staffArray[i] = new OfficeStaff(id, name, department);
+        }
+
+        // Display all OfficeStaff members' details
+        System.out.println("\n--- OfficeStaff Details ---");
+        for (OfficeStaff staff : staffArray) {
+            staff.display();
+        }
+
+        scanner.close();
+    }
+}
