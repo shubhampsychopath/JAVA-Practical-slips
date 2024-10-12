@@ -1,0 +1,24 @@
+Q1.write a java program to find the cube of given number using function interface
+import java.util.function.Function;
+import java.util.Scanner;
+
+public class CubeCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Lambda expression to calculate the cube of a number
+        Function<Integer, Integer> cubeFunction = n -> n * n * n;
+
+        // Accept user input
+        System.out.print("Enter a number to find its cube: ");
+        int number = scanner.nextInt();
+
+        // Use the function interface to calculate the cube
+        int result = cubeFunction.apply(number);
+
+        // Display the result
+        System.out.println("The cube of " + number + " is: " + result);
+
+        scanner.close();
+    }
+}
