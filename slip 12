@@ -1,0 +1,47 @@
+Q1.define an interface "operation" which has methods area(), volume(). Define a constant PI having value 3.142. Create a class cylinder which implements this interface (members-radius, height) Create one object and calculate the area and volume.
+// Define the interface with methods area() and volume()
+interface Operation {
+    double PI = 3.142; // Constant value of PI
+
+    // Method to calculate area
+    double area();
+
+    // Method to calculate volume
+    double volume();
+}
+
+// Cylinder class that implements the Operation interface
+class Cylinder implements Operation {
+    private double radius;
+    private double height;
+
+    // Parameterized constructor to initialize radius and height
+    public Cylinder(double radius, double height) {
+        this.radius = radius;
+        this.height = height;
+    }
+
+    // Implement the area() method
+    @Override
+    public double area() {
+        return 2 * PI * radius * (radius + height);
+    }
+
+    // Implement the volume() method
+    @Override
+    public double volume() {
+        return PI * radius * radius * height;
+    }
+}
+
+// Main class to test the program
+public class CylinderTest {
+    public static void main(String[] args) {
+        // Create an object of Cylinder
+        Cylinder cylinder = new Cylinder(5, 10);
+
+        // Calculate and display the area and volume
+        System.out.printf("Area of Cylinder: %.2f\n", cylinder.area());
+        System.out.printf("Volume of Cylinder: %.2f\n", cylinder.volume());
+    }
+}
