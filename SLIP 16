@@ -1,0 +1,186 @@
+Q1.accept the names of two files and copy the contents of the first to the second. First file having Book name and author name in file. Second file having the contents of first file and also add the comment 'end of file' at the end.
+import java.io.*;
+import java.util.Scanner;
+
+public class FileCopy {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Accept file names from the user
+        System.out.print("Enter the name of the source file: ");
+        String sourceFile = scanner.nextLine();
+
+        System.out.print("Enter the name of the destination file: ");
+        String destinationFile = scanner.nextLine();
+
+        // Perform file copy and append "End of File" at the end
+        try (
+            BufferedReader reader = new BufferedReader(new FileReader(sourceFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(destinationFile))
+        ) {
+            String line;
+
+            // Copy content from the source file to the destination file
+            while ((line = reader.readLine()) != null) {
+                writer.write(line);
+                writer.newLine();
+            }
+
+            // Add the comment "End of File" at the end
+            writer.write("End of File");
+            System.out.println("Content copied successfully with 'End of File' comment.");
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error copying file: " + e.getMessage());
+        }
+
+        scanner.close();
+    }
+}
+
+Q2,write a program to read book information(bookid, bookname, bookprice, bookqty) in file "book.dat". Write a menu driven program to perform the following operations using random access file:  i.search for a specific book by name.  ii.Display all book and total cost.
+import java.io.*;
+import java.util.Scanner;
+
+class Book implements Serializable {
+    int bookId;
+    String bookName;
+    double bookPrice;
+    int bookQty;
+
+    public Book(int bookId, String bookName, double bookPrice, int bookQty) {
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.bookPrice = bookPrice;
+        this.bookQty = bookQty;
+    }
+
+    @Override
+    public String toString() {
+        return "Book ID: " + bookId + ", Name: " + bookName + 
+               ", Price: " + bookPrice + ", Quantity: " + bookQty;
+    }
+}
+
+public class BookManager {
+    private static final String FILE_NAME = "book.dat";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Add Book");
+            System.out.println("2. Search Book by Name");
+            System.out.println("3. Display All Books and Total Cost");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addBook(scanner);
+                    break;
+                case 2:
+                    searchBook(scanner);
+                    break;
+                case 3:
+                    displayAllBooks();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        }
+    }
+
+    // Method to add a book to the file
+    private static void addBook(Scanner scanner) {
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "rw")) {
+            file.seek(file.length());  // Move to the end of the file
+
+            System.out.print("Enter Book ID: ");
+            int id = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            System.out.print("Enter Book Name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Enter Book Price: ");
+            double price = scanner.nextDouble();
+
+            System.out.print("Enter Book Quantity: ");
+            int qty = scanner.nextInt();
+
+            // Write book data to the file
+            file.writeInt(id);
+            file.writeUTF(name);
+            file.writeDouble(price);
+            file.writeInt(qty);
+
+            System.out.println("Book added successfully.");
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
+    // Method to search for a book by name
+    private static void searchBook(Scanner scanner) {
+        System.out.print("Enter Book Name to search: ");
+        String searchName = scanner.nextLine();
+
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
+            boolean found = false;
+
+            while (file.getFilePointer() < file.length()) {
+                int id = file.readInt();
+                String name = file.readUTF();
+                double price = file.readDouble();
+                int qty = file.readInt();
+
+                if (name.equalsIgnoreCase(searchName)) {
+                    System.out.println("\nBook Found:");
+                    System.out.println("ID: " + id + ", Name: " + name + 
+                                       ", Price: " + price + ", Quantity: " + qty);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Book not found.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
+
+    // Method to display all books and calculate total cost
+    private static void displayAllBooks() {
+        double totalCost = 0;
+
+        try (RandomAccessFile file = new RandomAccessFile(FILE_NAME, "r")) {
+            System.out.println("\nAll Books:");
+
+            while (file.getFilePointer() < file.length()) {
+                int id = file.readInt();
+                String name = file.readUTF();
+                double price = file.readDouble();
+                int qty = file.readInt();
+
+                System.out.println("ID: " + id + ", Name: " + name + 
+                                   ", Price: " + price + ", Quantity: " + qty);
+                totalCost += price * qty;
+            }
+
+            System.out.println("Total Cost of All Books: " + totalCost);
+        } catch (IOException e) {
+            System.out.println("Error reading from file: " + e.getMessage());
+        }
+    }
+}
