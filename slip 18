@@ -1,0 +1,63 @@
+Q1.Design a screen to handle the Mouse Events such as MOUSE_MOVED and MOUSE_CLICK and display the position of the Mouse_click in a textfield.
+import java.awt.*;
+import java.awt.event.*;
+
+public class MouseEventDemo extends Frame implements MouseListener, MouseMotionListener {
+    TextField positionField;
+
+    public MouseEventDemo() {
+        // Set up the frame
+        setTitle("Mouse Event Demo");
+        setSize(400, 300);
+        setLayout(new FlowLayout());
+
+        // Create a TextField to display the position of the mouse click
+        positionField = new TextField(30);
+        positionField.setEditable(false);
+        add(positionField);
+
+        // Add MouseListener and MouseMotionListener to the Frame
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        // Add a WindowListener to close the application
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                System.exit(0);
+            }
+        });
+
+        setVisible(true);
+    }
+
+    // Implement MouseListener methods
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        String position = "Mouse Clicked at: (" + e.getX() + ", " + e.getY() + ")";
+        positionField.setText(position);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+    @Override
+    public void mouseExited(MouseEvent e) {}
+
+    // Implement MouseMotionListener methods
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        String position = "Mouse Moved to: (" + e.getX() + ", " + e.getY() + ")";
+        positionField.setText(position);
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {}
+
+    public static void main(String[] args) {
+        new MouseEventDemo();
+    }
+}
+
